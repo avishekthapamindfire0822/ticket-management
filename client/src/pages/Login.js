@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -6,22 +6,32 @@ import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Navigate } from 'react-router-dom';
 import { loginUser } from '../service/auth.service';
+import { AuthContext } from '../component/AuthContextProvider';
+import { AUTH_REDUCER_ACTION } from '../reducer/auth-reducer';
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const { state, dispatch } = useContext(AuthContext);
+  if (state.isAuthenticated) {
+    return <Navigate to='/dashboard' replace />;
+  }
   const onSubmitHandler = (event) => {
     event.preventDefault();
     const emailId = emailRef.current.value;
     const password = passwordRef.current.value;
     loginUser({ emailId, password }).then((res) => {
-      console.log({ res });
+      dispatch({
+        type: AUTH_REDUCER_ACTION.LOGIN,
+        payload: { ...res.data.data, isAuthenticated: true },
+      });
     });
   };
   return (
     <Container>
       <Row className='justify-content-center mt-4'>
-        <Col sm={12} md={4}>
+        <Col sm={12} md={8} lg={4}>
           <Card>
             <Card.Body>
               <Form onSubmit={onSubmitHandler}>
