@@ -1,6 +1,6 @@
 const errorController = (err, req, res, next) => {
   if (err.isOperational) {
-    return res.status(err.statusCode).json({
+    return res.status(err.status).json({
       error: err.message,
       data: null,
     });
