@@ -18,7 +18,14 @@ const updateTicket = asyncHandler(async (req, res) => {
   });
 });
 
+const deleteTicket = asyncHandler(async (req, res) => {
+  const { ticketId } = req.params;
+  await ticketService.deleteTicket(ticketId);
+  res.status(204).json();
+});
+
 module.exports = {
   createTicket,
   updateTicket,
+  deleteTicket,
 };

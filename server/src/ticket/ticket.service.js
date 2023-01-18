@@ -27,7 +27,13 @@ const updateTicket = async (ticketId) => {
   return ticket.save();
 };
 
+const deleteTicket = async (ticketId) => {
+  const _id = mongoose.Types.ObjectId(ticketId);
+  return Ticket.findByIdAndRemove(_id);
+};
+
 module.exports = {
   createTicket,
   updateTicket,
+  deleteTicket,
 };
