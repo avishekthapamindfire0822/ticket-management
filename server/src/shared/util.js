@@ -1,4 +1,4 @@
-const CONSTANTS = require('./constant');
+const CONSTANTS = require('./constants');
 
 function checkEmailId(emailId) {
   return CONSTANTS.EMAIL_ID_REGEXP.test(emailId);
