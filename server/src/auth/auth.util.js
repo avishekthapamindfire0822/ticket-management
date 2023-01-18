@@ -15,8 +15,13 @@ async function createJwtToken(payload) {
   });
 }
 
+async function verifyJwtToken(token) {
+  return jwt.verify(token, config.tokenSecret);
+}
+
 module.exports = {
   encryptPassword,
   comparePassword,
   createJwtToken,
+  verifyJwtToken,
 };
