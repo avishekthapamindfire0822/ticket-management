@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:user": "node ./src/user/seed/user.seed.js",
     "start:dev": "SET NODE_ENV=development&&nodemon ./src/index.js",
     "start:debug": "SET NODE_ENV=development&&nodemon --inspect ./src/index.js"
   },
