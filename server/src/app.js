@@ -1,10 +1,12 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const authRouter = require('./auth/auth.router');
 const errorController = require('./shared/error.controller');
 const ticketRouter = require('./ticket/ticket.router');
 var cors = require('cors');
 const app = express();
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use(authRouter);
 app.use(ticketRouter);
