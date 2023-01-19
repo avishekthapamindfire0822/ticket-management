@@ -150,26 +150,12 @@ const TicketListItem = ({
             Show comments
           </p>
           {showComment && comments?.length > 0 ? (
-            <div>
-              {/* <ul
-                style={{
-                  listStyle: 'none',
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
-                {comments.map((comment) => (
-                  <li key={comment._id} className='mb-2'>
-                    <Card className='p-2'>{comment.content}</Card>
-                  </li>
-                ))}
-              </ul> */}
-
+            <>
               {state.role === 'IT_STAFF' ? (
                 <CommentBox ref={commentRef} submitHandler={submitHandler} />
               ) : null}
               <CommentList comments={comments} />
-            </div>
+            </>
           ) : null}
           {showComment && comments?.length === 0 ? <p>No Comments</p> : null}
         </Card.Body>
