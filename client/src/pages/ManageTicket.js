@@ -31,13 +31,22 @@ const ManageTicket = () => {
       data: [newTicket, ...prevState.data],
     }));
   };
+  const deleteTicketCallback = (ticketId) => {
+    setTicketState((prevState) => ({
+      ...prevState,
+      data: prevState.data.filter(({ _id }) => _id !== ticketId),
+    }));
+  };
   return (
     <header>
       <NavMenu newTicketAddedCallback={newTicketAddedCallback} />
       {!ticketState.loading &&
       Array.isArray(ticketState.data) &&
       ticketState.data.length > 0 ? (
-        <TicketList tickets={ticketState.data} />
+        <TicketList
+          tickets={ticketState.data}
+          deleteTicketCallback={deleteTicketCallback}
+        />
       ) : null}
     </header>
   );
