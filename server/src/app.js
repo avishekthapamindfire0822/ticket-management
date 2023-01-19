@@ -12,5 +12,10 @@ app.use(express.json());
 app.use(authRouter);
 app.use(ticketRouter);
 app.use(userRouter);
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Resource not found',
+  });
+});
 app.use(errorController);
 module.exports = app;
