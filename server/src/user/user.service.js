@@ -10,6 +10,14 @@ const getUserTickets = async (userId, role) => {
     // );
     const tickets = await Ticket.find({})
       .populate('submittedBy', '_id firstName lastName emailId')
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'author',
+          model: 'User',
+          select: '_id firstName lastName emailId',
+        },
+      })
       .populate('assignedTo', 'firstName lastName');
     return { tickets };
   }
@@ -17,7 +25,15 @@ const getUserTickets = async (userId, role) => {
     submittedBy: userId,
   })
     .populate('assignedTo', 'firstName lastName')
-    .select('_id description createdAt updatedAt status comments');
+    .populate({
+      path: 'comments',
+      populate: {
+        path: 'author',
+        model: 'User',
+        select: '_id firstName lastName emailId',
+      },
+    })
+    .select('_id description createdAt updatedAt status');
   return { tickets };
 };
 
