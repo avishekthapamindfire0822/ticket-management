@@ -37,6 +37,20 @@ const ManageTicket = () => {
       data: prevState.data.filter(({ _id }) => _id !== ticketId),
     }));
   };
+
+  const ticketUpdateCallback = (ticketId) => {
+    setTicketState((prevState) => ({
+      ...prevState,
+      data: prevState.data.map((ticket) =>
+        ticket._id === ticketId
+          ? {
+              ...ticket,
+              status: 'FIXED',
+            }
+          : ticket
+      ),
+    }));
+  };
   return (
     <header>
       <NavMenu newTicketAddedCallback={newTicketAddedCallback} />
@@ -46,6 +60,7 @@ const ManageTicket = () => {
         <TicketList
           tickets={ticketState.data}
           deleteTicketCallback={deleteTicketCallback}
+          ticketUpdateCallback={ticketUpdateCallback}
         />
       ) : null}
     </header>

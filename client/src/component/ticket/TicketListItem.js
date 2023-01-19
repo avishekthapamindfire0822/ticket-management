@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import { Card } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContextProvider';
-import { deleteTicket } from '../../service/ticket.service';
+import {
+  deleteTicket,
+  markTicketAsComplete,
+} from '../../service/ticket.service';
 import TicketStatus from './TicketStatus';
 const TicketListItem = ({
   _id,
@@ -10,6 +13,7 @@ const TicketListItem = ({
   createdAt,
   status,
   deleteTicketCallback,
+  ticketUpdateCallback,
 }) => {
   const { state } = useContext(AuthContext);
   const deleteTicketHandler = (event) => {
@@ -23,6 +27,19 @@ const TicketListItem = ({
       })
       .catch((err) => {
         console.log({ err });
+      });
+  };
+
+  const onChangeHandler = (event) => {
+    markTicketAsComplete(state.token, _id)
+      .then((res) => {
+        if (res.status === 204) {
+          alert('Ticket updated successfully.');
+          ticketUpdateCallback(_id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   return (
@@ -40,7 +57,6 @@ const TicketListItem = ({
             </span>
           </p>
         ) : null}
-        {/* {state.role === "IT_STAFF" && status !== "FIXED"} */}
         <p className='mb-4'>{description}</p>
         <p>Submitted on : {new Date(createdAt).toDateString()}</p>
         <p className='fw-bold'>
@@ -51,6 +67,12 @@ const TicketListItem = ({
           <p>
             Submitted by : {`${submittedBy.firstName} ${submittedBy.lastName}`}
           </p>
+        ) : null}
+        {state.role === 'IT_STAFF' && status !== 'FIXED' ? (
+          <div className='text-end'>
+            <input type='checkbox' onChange={onChangeHandler} />
+            <span className='mx-2'>Mark As Fixed</span>
+          </div>
         ) : null}
       </Card.Body>
     </Card>

@@ -31,4 +31,12 @@ const deleteTicket = async (token, ticketId) => {
   });
 };
 
-export { getTickets, createTicket, deleteTicket };
+const markTicketAsComplete = async (token, ticketId) => {
+  return axiosInstance.put(`${API_URL_CONSTANTS.TICKET}/${ticketId}`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export { getTickets, createTicket, deleteTicket, markTicketAsComplete };
