@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Navigate } from 'react-router-dom';
 import { loginUser } from '../service/auth.service';
-import { AuthContext } from '../component/AuthContextProvider';
+import { AuthContext } from '../context/AuthContextProvider';
 import { AUTH_REDUCER_ACTION } from '../reducer/auth-reducer';
 const Login = () => {
   const emailRef = useRef();
