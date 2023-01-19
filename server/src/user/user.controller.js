@@ -9,6 +9,14 @@ const getUserTickets = asyncHandler(async (req, res) => {
   });
 });
 
+const getTicketAggregates = asyncHandler(async (req, res) => {
+  const ticketAggregates = await userService.getTicketAggregates();
+  res.status(200).json({
+    data: ticketAggregates,
+  });
+});
+
 module.exports = {
   getUserTickets,
+  getTicketAggregates,
 };

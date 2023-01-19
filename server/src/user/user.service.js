@@ -3,18 +3,33 @@ const userRoles = require('./user.roles');
 
 const getUserTickets = async (userId, role) => {
   if (role === userRoles.IT_STAFF) {
-    return Ticket.find({}).populate(
+    const tickets = await Ticket.find({}).populate(
       'submittedBy',
-      'firstName lastName emailId'
+      '_id firstName lastName emailId'
     );
+    return { tickets };
   }
-  return Ticket.find({
+  const tickets = await Ticket.find({
     submittedBy: userId,
-  })
-    .populate('submittedBy')
-    .select('_id description createdAt updatedAt');
+  }).select('_id description createdAt updatedAt status');
+  return { tickets };
+};
+
+const getTicketAggregates = async () => {
+  const noOfTicketBasedOnStatus = await Ticket.aggregate().group({
+    _id: '$status',
+    count: { $sum: 1 },
+  });
+  const result = noOfTicketBasedOnStatus.reduce((cumm, curr) => {
+    cumm[curr._id] = curr.count;
+    return cumm;
+  }, {});
+  return {
+    ...result,
+  };
 };
 
 module.exports = {
   getUserTickets,
+  getTicketAggregates,
 };
