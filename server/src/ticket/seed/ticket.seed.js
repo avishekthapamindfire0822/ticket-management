@@ -18,12 +18,6 @@ const userRoles = require('../../user/user.roles');
         about: Object.values(ticketProductTypes)[Math.floor(Math.random() * 5)],
         description: 'Default Ticket Description',
       });
-      if (user.role === userRoles.IT_STAFF) {
-        ticket.comments.push({
-          content: 'Default comment',
-          author: user,
-        });
-      }
       return ticket;
     });
     const insertedTickets = await Ticket.insertMany(tickets);
