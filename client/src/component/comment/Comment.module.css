@@ -1,0 +1,21 @@
+.comments {
+  max-height: 18rem;
+  overflow: hidden;
+  overflow-y: scroll;
+  margin-top: 1rem;
+}
+
+.name-avataar {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: lightgray;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0.2rem;
+}
+
+.comment-description {
+  margin-left: 2.5rem;
+}

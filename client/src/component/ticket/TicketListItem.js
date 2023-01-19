@@ -7,6 +7,8 @@ import {
   markTicketAsComplete,
   postCommentOnTicket,
 } from '../../service/ticket.service';
+import CommentBox from '../comment/CommentBox';
+import CommentList from '../comment/CommentList';
 import AssignTicketModal from '../ticket-modal/AssignTicketModal';
 import TicketStatus from './TicketStatus';
 const TicketListItem = ({
@@ -127,6 +129,16 @@ const TicketListItem = ({
               Assigned To : {assignedTo.firstName} {assignedTo.lastName}
             </p>
           ) : null}
+
+          {state.role === 'IT_STAFF' && !assignedTo ? (
+            <Button
+              className='bg-primary text-capitalize mb-1'
+              onClick={ticketAssignModalVisibilityHandler}
+            >
+              assign to
+            </Button>
+          ) : null}
+
           <p
             onClick={() => {
               setShowComments((prevState) => !prevState);
@@ -139,7 +151,7 @@ const TicketListItem = ({
           </p>
           {showComment && comments?.length > 0 ? (
             <div>
-              <ul
+              {/* <ul
                 style={{
                   listStyle: 'none',
                   margin: 0,
@@ -151,36 +163,15 @@ const TicketListItem = ({
                     <Card className='p-2'>{comment.content}</Card>
                   </li>
                 ))}
-              </ul>
+              </ul> */}
+
               {state.role === 'IT_STAFF' ? (
-                <Form onSubmit={submitHandler} className='mt-2'>
-                  <Form.Group className='mb-3'>
-                    <Form.Control
-                      as='textarea'
-                      type='text'
-                      placeholder='Enter comment'
-                      style={{ height: '100px' }}
-                      ref={commentRef}
-                    />
-                  </Form.Group>
-                  <div className='text-center'>
-                    <Button variant='primary' type='submit'>
-                      Submit
-                    </Button>
-                  </div>
-                </Form>
+                <CommentBox ref={commentRef} submitHandler={submitHandler} />
               ) : null}
+              <CommentList comments={comments} />
             </div>
           ) : null}
           {showComment && comments?.length === 0 ? <p>No Comments</p> : null}
-          {state.role === 'IT_STAFF' && !assignedTo ? (
-            <Button
-              className='bg-primary text-capitalize'
-              onClick={ticketAssignModalVisibilityHandler}
-            >
-              assign to
-            </Button>
-          ) : null}
         </Card.Body>
       </Card>
       <AssignTicketModal
