@@ -14,6 +14,12 @@ ticketRouter
   )
   .delete(ticketController.deleteTicket);
 ticketRouter.post(
+  '/tickets/:ticketId/assign',
+  roleValidationMiddleware(userRoles.IT_STAFF),
+  ticketController.assignedTicket
+);
+
+ticketRouter.post(
   '/tickets/:ticketId/comments',
   roleValidationMiddleware(userRoles.IT_STAFF),
   ticketController.postCommentOnTicket

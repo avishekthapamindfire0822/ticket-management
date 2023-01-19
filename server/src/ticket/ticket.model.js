@@ -17,6 +17,7 @@ const ticketSchema = new Schema(
       default: ticketStatus.UNDER_REVIEW,
     },
     description: String,
+    assignedTo: { type: Schema.Types.ObjectId, ref: 'User' },
     comments: [
       {
         author: {

@@ -40,9 +40,19 @@ const postCommentOnTicket = asyncHandler(async (req, res) => {
   });
 });
 
+const assignedTicket = asyncHandler(async (req, res) => {
+  const { emailId } = req.body;
+  const { ticketId } = req.params;
+  const result = await ticketService.assignedTicket(ticketId, emailId);
+  res.status(201).json({
+    data: result,
+  });
+});
+
 module.exports = {
   createTicket,
   updateTicket,
   deleteTicket,
   postCommentOnTicket,
+  assignedTicket,
 };

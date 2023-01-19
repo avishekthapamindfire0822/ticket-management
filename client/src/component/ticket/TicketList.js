@@ -6,6 +6,7 @@ const TicketList = ({
   deleteTicketCallback,
   ticketUpdateCallback,
   postNewCommentCallback,
+  assignedTicketCallback,
 }) => {
   return (
     <ul className={styles['ticket-list']}>
@@ -16,6 +17,7 @@ const TicketList = ({
           deleteTicketCallback={deleteTicketCallback}
           ticketUpdateCallback={ticketUpdateCallback}
           postNewCommentCallback={postNewCommentCallback}
+          assignedTicketCallback={assignedTicketCallback}
         />
       ))}
     </ul>

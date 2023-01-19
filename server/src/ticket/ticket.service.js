@@ -57,9 +57,28 @@ const postCommentOnTicket = async ({ userId, ticketId, comment }) => {
   return await await await (await ticket.save()).populate('comments');
 };
 
+const assignedTicket = async (ticketId, emailId) => {
+  const _ticketId = mongoose.Types.ObjectId(ticketId);
+  const ticket = await Ticket.findById(_ticketId);
+  if (!ticket) {
+    throw new NotFoundException();
+  }
+  const user = await User.findOne({
+    emailId,
+  });
+  ticket.assignedTo = user;
+  const updatedTicket = await ticket.save();
+  return {
+    _id: updatedTicket._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+  };
+};
+
 module.exports = {
   createTicket,
   updateTicket,
   deleteTicket,
   postCommentOnTicket,
+  assignedTicket,
 };

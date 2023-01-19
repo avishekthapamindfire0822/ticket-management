@@ -3,6 +3,7 @@ const roleValidationMiddleware = require('../middleware/role-validation.middlewa
 const userRouter = Router();
 const userController = require('./user.controller');
 const userRoles = require('./user.roles');
+userRouter.get('/users', userController.getITStaff);
 userRouter.get('/user/tickets', userController.getUserTickets);
 userRouter
   .route('/user/ticket-aggregates')

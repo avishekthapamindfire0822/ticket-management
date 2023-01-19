@@ -53,10 +53,34 @@ const postCommentOnTicket = async (token, ticketId, comment) => {
   );
 };
 
+const getITStaff = async (token) => {
+  return axiosInstance.get(API_URL_CONSTANTS.USERS, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+const assignTicketToStaff = async (token, ticketId, emailId) => {
+  return axiosInstance.post(
+    `${API_URL_CONSTANTS.TICKET}/${ticketId}/assign`,
+    {
+      emailId,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
 export {
   getTickets,
   createTicket,
   deleteTicket,
   markTicketAsComplete,
   postCommentOnTicket,
+  getITStaff,
+  assignTicketToStaff,
 };

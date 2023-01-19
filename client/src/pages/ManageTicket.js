@@ -60,6 +60,18 @@ const ManageTicket = () => {
       ),
     }));
   };
+
+  const assignedTicketCallback = ({ ticketId, ...ticketAssignDetail }) => {
+    console.log({ ticketId, ticketAssignDetail });
+    setTicketState((prevState) => ({
+      ...prevState,
+      data: prevState.data.map((ticket) =>
+        ticket._id === ticketId
+          ? { ...ticket, assignedTo: ticketAssignDetail }
+          : ticket
+      ),
+    }));
+  };
   return (
     <header>
       <NavMenu newTicketAddedCallback={newTicketAddedCallback} />
@@ -71,6 +83,7 @@ const ManageTicket = () => {
           deleteTicketCallback={deleteTicketCallback}
           ticketUpdateCallback={ticketUpdateCallback}
           postNewCommentCallback={postNewCommentCallback}
+          assignedTicketCallback={assignedTicketCallback}
         />
       ) : null}
     </header>

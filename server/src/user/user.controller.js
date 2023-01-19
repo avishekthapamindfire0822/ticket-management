@@ -16,7 +16,15 @@ const getTicketAggregates = asyncHandler(async (req, res) => {
   });
 });
 
+const getITStaff = asyncHandler(async (req, res) => {
+  const staffMembers = await userService.getITStaff();
+  res.status(200).json({
+    data: staffMembers,
+  });
+});
+
 module.exports = {
   getUserTickets,
   getTicketAggregates,
+  getITStaff,
 };
