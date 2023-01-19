@@ -11,7 +11,7 @@ const getUserTickets = async (userId, role) => {
   }
   const tickets = await Ticket.find({
     submittedBy: userId,
-  }).select('_id description createdAt updatedAt status');
+  }).select('_id description createdAt updatedAt status comments');
   return { tickets };
 };
 
