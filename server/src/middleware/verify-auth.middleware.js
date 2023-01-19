@@ -7,12 +7,13 @@ const verifyAuth = asyncHandler(async (req, res, next) => {
   if (!token) {
     throw new UnAuthorizedException();
   }
-  const { _id, role, exp } = await verifyJwtToken(token);
+  const { _id, role, exp, emailId } = await verifyJwtToken(token);
   if (Date.now() > exp * 1000) {
     throw new UnAuthorizedException();
   }
   req.userId = _id;
   req.role = role;
+  req.emailId = emailId;
   next();
 });
 
