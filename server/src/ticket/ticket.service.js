@@ -9,7 +9,10 @@ const createTicket = async (ticketDto, submittedBy) => {
     submittedBy: user,
     ...ticketDto,
   });
-  return newTicket.save();
+  return (await newTicket.save()).populate(
+    'submittedBy',
+    '_id firstName lastName emailId'
+  );
 };
 
 const updateTicket = async (ticketId) => {
