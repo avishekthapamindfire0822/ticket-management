@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Ticket.module.css';
 const TicketStatus = ({ status }) => {
-  console.log({ styles });
   return (
     <span
       className={
