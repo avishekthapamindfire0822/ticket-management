@@ -9,3 +9,12 @@
 .ticket-list-item {
   margin-top: 2rem;
 }
+
+.ticket-status {
+  height: 12px;
+  width: 12px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-left: 8px;
+  vertical-align: middle;
+}
