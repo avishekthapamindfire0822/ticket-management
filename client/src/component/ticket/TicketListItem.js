@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Card } from 'react-bootstrap';
+import { AuthContext } from '../../context/AuthContextProvider';
 import TicketStatus from './TicketStatus';
 const TicketListItem = ({
   _id,
@@ -8,6 +9,7 @@ const TicketListItem = ({
   createdAt,
   status,
 }) => {
+  const { state } = useContext(AuthContext);
   return (
     <Card className='mb-2'>
       <Card.Body>
@@ -17,6 +19,11 @@ const TicketListItem = ({
           Status : {status.toUpperCase()}
           <TicketStatus status={status} />
         </p>
+        {state.role === 'IT_STAFF' ? (
+          <p>
+            Submitted by : {`${submittedBy.firstName} ${submittedBy.lastName}`}
+          </p>
+        ) : null}
       </Card.Body>
     </Card>
   );
