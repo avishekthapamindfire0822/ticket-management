@@ -1,8 +1,8 @@
 const { Schema, model } = require('mongoose');
-const util = require('../shared/util');
 const CONSTANTS = require('../shared/constants');
 const ticketProductTypes = require('./ticket.product-types');
 const ticketStatus = require('./ticket.status');
+const { commentSchema } = require('./comment.model');
 const ticketSchema = new Schema(
   {
     submittedBy: { type: Schema.Types.ObjectId, ref: 'User' },
@@ -18,19 +18,7 @@ const ticketSchema = new Schema(
     },
     description: String,
     assignedTo: { type: Schema.Types.ObjectId, ref: 'User' },
-    comments: [
-      {
-        author: {
-          type: Schema.Types.ObjectId,
-          ref: 'User',
-          required: true,
-        },
-        content: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+    comments: [commentSchema],
   },
   { timestamps: true }
 );
