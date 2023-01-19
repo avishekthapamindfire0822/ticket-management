@@ -39,4 +39,24 @@ const markTicketAsComplete = async (token, ticketId) => {
   });
 };
 
-export { getTickets, createTicket, deleteTicket, markTicketAsComplete };
+const postCommentOnTicket = async (token, ticketId, comment) => {
+  return axiosInstance.post(
+    `${API_URL_CONSTANTS.TICKET}/${ticketId}/${API_URL_CONSTANTS.COMMENTS}`,
+    {
+      comment,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export {
+  getTickets,
+  createTicket,
+  deleteTicket,
+  markTicketAsComplete,
+  postCommentOnTicket,
+};

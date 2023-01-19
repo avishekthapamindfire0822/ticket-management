@@ -3,6 +3,7 @@ const API_URL_CONSTANTS = {
   LOGIN: '/login',
   TICKET: '/tickets',
   GET_USER_TICKETS: '/user/tickets',
+  COMMENTS: 'comments',
 };
 
 export default API_URL_CONSTANTS;

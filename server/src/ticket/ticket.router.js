@@ -8,10 +8,15 @@ ticketRouter.use(verifyAuth);
 ticketRouter.post('/tickets', ticketController.createTicket);
 ticketRouter
   .route('/tickets/:ticketId')
-  .patch(
+  .put(
     roleValidationMiddleware(userRoles.IT_STAFF),
     ticketController.updateTicket
   )
   .delete(ticketController.deleteTicket);
+ticketRouter.post(
+  '/tickets/:ticketId/comments',
+  roleValidationMiddleware(userRoles.IT_STAFF),
+  ticketController.postCommentOnTicket
+);
 
 module.exports = ticketRouter;

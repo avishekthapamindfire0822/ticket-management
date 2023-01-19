@@ -38,6 +38,15 @@ const ManageTicket = () => {
     }));
   };
 
+  const postNewCommentCallback = (ticketId, newComments) => {
+    setTicketState((prevState) => ({
+      ...prevState,
+      data: prevState.data.map((ticket) =>
+        ticket._id === ticketId ? { ...ticket, comments: newComments } : ticket
+      ),
+    }));
+  };
+
   const ticketUpdateCallback = (ticketId) => {
     setTicketState((prevState) => ({
       ...prevState,
@@ -61,6 +70,7 @@ const ManageTicket = () => {
           tickets={ticketState.data}
           deleteTicketCallback={deleteTicketCallback}
           ticketUpdateCallback={ticketUpdateCallback}
+          postNewCommentCallback={postNewCommentCallback}
         />
       ) : null}
     </header>

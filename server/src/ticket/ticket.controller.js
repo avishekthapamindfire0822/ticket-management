@@ -27,8 +27,22 @@ const deleteTicket = asyncHandler(async (req, res) => {
   res.status(204).json();
 });
 
+const postCommentOnTicket = asyncHandler(async (req, res) => {
+  const { comment } = req.body;
+  const { ticketId } = req.params;
+  const commentDoc = await ticketService.postCommentOnTicket({
+    userId: req.userId,
+    comment,
+    ticketId,
+  });
+  res.status(200).json({
+    data: commentDoc,
+  });
+});
+
 module.exports = {
   createTicket,
   updateTicket,
   deleteTicket,
+  postCommentOnTicket,
 };
