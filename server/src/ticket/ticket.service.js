@@ -4,6 +4,7 @@ const Ticket = require('./ticket.model');
 const ticketStatus = require('./ticket.status');
 const mongoose = require('mongoose');
 const ForbiddenException = require('../shared/exception/ForbiddenException');
+const { Comment } = require('./comment.model');
 const createTicket = async (ticketDto, submittedBy) => {
   const user = await User.findOne({ emailId: submittedBy });
   const newTicket = new Ticket({
@@ -50,11 +51,11 @@ const postCommentOnTicket = async ({ userId, ticketId, comment }) => {
   const user = await User.findById(_userId).select(
     '_id firstName lastName emailId'
   );
-  ticket.comments.push({
-    author: user,
-    content: comment,
-  });
-  return await await await (await ticket.save()).populate('comments');
+  const newComment = new Comment({ content: comment, author: user });
+  ticket.comments.push(newComment);
+  const updatedTicket = await ticket.save();
+  const updatedComment = updatedTicket.comments.at(-1);
+  return updatedComment;
 };
 
 const assignedTicket = async (ticketId, emailId) => {
