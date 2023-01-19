@@ -1,7 +1,7 @@
 const ticketProductTypes = {
   MOBILE_APP: 'MOBILE_APP',
   WEBSITE: 'WEBSITE',
-  SUBSCRIPTIONS: 'Subscriptions',
+  SUBSCRIPTIONS: 'SUBSCRIPTIONS',
   GENERAL: 'GENERAL',
   OTHER: 'OTHER',
 };
