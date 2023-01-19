@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContextProvider';
 import CreateTicketModal from '../ticket-modal/CreateTicketModal';
 import styles from './NavMenu.module.css';
-const NavMenu = () => {
+const NavMenu = ({ newTicketAddedCallback }) => {
   const { state } = useContext(AuthContext);
   const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
   const createTicketModalVisibilityHandler = () => {
@@ -15,6 +15,7 @@ const NavMenu = () => {
       <CreateTicketModal
         show={showCreateTicketModal}
         handleClose={createTicketModalVisibilityHandler}
+        newTicketAddedCallback={newTicketAddedCallback}
       />
       <Nav className='bg-primary justify-content-end text-white align-items-center py-3'>
         <Nav.Item

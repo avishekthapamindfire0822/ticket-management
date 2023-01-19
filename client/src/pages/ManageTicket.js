@@ -25,9 +25,15 @@ const ManageTicket = () => {
         }));
       });
   }, [state.token]);
+  const newTicketAddedCallback = (newTicket) => {
+    setTicketState((prevState) => ({
+      ...prevState,
+      data: [newTicket, ...prevState.data],
+    }));
+  };
   return (
     <header>
-      <NavMenu />
+      <NavMenu newTicketAddedCallback={newTicketAddedCallback} />
       {!ticketState.loading &&
       Array.isArray(ticketState.data) &&
       ticketState.data.length > 0 ? (

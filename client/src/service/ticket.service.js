@@ -9,4 +9,18 @@ const getTickets = async (token) => {
   });
 };
 
-export { getTickets };
+const createTicket = async (token, ticketDetail) => {
+  return axiosInstance.post(
+    API_URL_CONSTANTS.TICKET,
+    {
+      ...ticketDetail,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export { getTickets, createTicket };
