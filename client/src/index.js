@@ -5,18 +5,18 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './pages/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AuthContextProvider from './context/AuthContextProvider';
-import Dashboard from './pages/Dashboard';
 import ManageTicket from './pages/ManageTicket';
+import Home from './pages/HomePage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />,
+    element: <Home />,
   },
   {
-    path: '/dashboard',
-    element: <Dashboard />,
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '/manage-ticket',

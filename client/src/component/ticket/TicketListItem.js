@@ -28,12 +28,7 @@ const TicketListItem = ({
 }) => {
   const { state } = useContext(AuthContext);
   const [showComment, setShowComments] = useState(false);
-  const [showTickedAssignModal, setTicketAssignModal] = useState(false);
   const commentRef = useRef();
-
-  const ticketAssignModalVisibilityHandler = (event) => {
-    setTicketAssignModal((prevState) => !prevState);
-  };
   const deleteTicketHandler = (event) => {
     event.preventDefault();
     deleteTicket(state.token, _id)
@@ -69,7 +64,6 @@ const TicketListItem = ({
     postCommentOnTicket(state.token, _id, comment)
       .then((res) => {
         commentRef.current.value = '';
-        console.log({ res });
         postNewCommentCallback(_id, res.data.data);
       })
       .catch(console.log);
@@ -80,7 +74,6 @@ const TicketListItem = ({
       .then((res) => {
         if (res.status === 201) {
           const { firstName, lastName, _id } = res.data.data;
-          ticketAssignModalVisibilityHandler();
           assignedTicketCallback({
             firstName,
             lastName,

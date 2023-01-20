@@ -4,8 +4,10 @@ const verifyAuth = require('../middleware/verify-auth.middleware');
 const userRoles = require('../user/user.roles');
 const ticketRouter = Router();
 const ticketController = require('./ticket.controller');
-ticketRouter.use(verifyAuth);
+
 ticketRouter.post('/tickets', ticketController.createTicket);
+ticketRouter.use(verifyAuth);
+ticketRouter.get('/tickets', ticketController.getTickets);
 ticketRouter
   .route('/tickets/:ticketId')
   .put(

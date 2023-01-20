@@ -5,7 +5,20 @@ const ticketStatus = require('./ticket.status');
 const { commentSchema } = require('./comment.model');
 const ticketSchema = new Schema(
   {
-    submittedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    submittedBy: {
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+      emailId: {
+        type: String,
+        required: true,
+      },
+    },
     about: {
       type: String,
       required: [true, CONSTANTS.TICKET_RELATED_PRODUCT_REQUIRED],

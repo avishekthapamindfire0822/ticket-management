@@ -2,25 +2,17 @@ import axiosInstance from '../config/axios-config';
 import API_URL_CONSTANTS from '../constants/api-url.constants';
 
 const getTickets = async (token) => {
-  return axiosInstance.get(API_URL_CONSTANTS.GET_USER_TICKETS, {
+  return axiosInstance.get(API_URL_CONSTANTS.TICKET, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 };
 
-const createTicket = async (token, ticketDetail) => {
-  return axiosInstance.post(
-    API_URL_CONSTANTS.TICKET,
-    {
-      ...ticketDetail,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+const createTicket = async (ticketDetail) => {
+  return axiosInstance.post(API_URL_CONSTANTS.TICKET, {
+    ...ticketDetail,
+  });
 };
 
 const deleteTicket = async (token, ticketId) => {

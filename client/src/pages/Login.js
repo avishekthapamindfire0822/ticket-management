@@ -14,8 +14,8 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { state, dispatch } = useContext(AuthContext);
-  if (state.isAuthenticated) {
-    return <Navigate to='/dashboard' replace />;
+  if (state.token) {
+    return <Navigate to='/manage-ticket' replace />;
   }
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -24,7 +24,7 @@ const Login = () => {
     loginUser({ emailId, password }).then((res) => {
       dispatch({
         type: AUTH_REDUCER_ACTION.LOGIN,
-        payload: { ...res.data.data, isAuthenticated: true },
+        payload: { ...res.data.data },
       });
     });
   };

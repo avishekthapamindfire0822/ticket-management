@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import NavMenu from '../component/nav/NavMenu';
 import TicketList from '../component/ticket/TicketList';
 import { AuthContext } from '../context/AuthContextProvider';
@@ -6,6 +7,7 @@ import { getITStaff, getTickets } from '../service/ticket.service';
 
 const ManageTicket = () => {
   const { state } = useContext(AuthContext);
+  const isAuthenticated = state.token;
   const [ticketState, setTicketState] = useState({
     loading: false,
     error: null,
@@ -13,6 +15,9 @@ const ManageTicket = () => {
     staffMembers: null,
   });
   useEffect(() => {
+    if (!state.token) {
+      return;
+    }
     Promise.allSettled([getTickets(state.token), getITStaff(state.token)])
       .then((result) => {
         const [ticketResult, stattMemberResult] = result;
@@ -72,6 +77,9 @@ const ManageTicket = () => {
       ),
     }));
   };
+  if (!isAuthenticated) {
+    return <Navigate to='/login' replace={false} />;
+  }
   return (
     <header>
       <NavMenu newTicketAddedCallback={newTicketAddedCallback} />
@@ -89,7 +97,12 @@ const ManageTicket = () => {
           assignedTicketCallback={assignedTicketCallback}
         />
       ) : null}
-      {ticketState.error && <p></p>}
+      {!ticketState.loading &&
+      !ticketState.error &&
+      ticketState.data?.length === 0 ? (
+        <p className='fs-2 text-center mt-4'>No Tickets Available.</p>
+      ) : null}
+      {ticketState.error && <p>{}</p>}
     </header>
   );
 };
