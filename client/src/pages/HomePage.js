@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import NavMenu from '../component/nav/NavMenu';
 import { createTicket } from '../service/ticket.service';
 
@@ -35,7 +36,7 @@ const Home = () => {
     })
       .then(() => {
         resetInputs();
-        alert('Ticket Submitted Successfully.');
+        toast.success('Ticket Submitted Successfully.');
       })
       .catch((err) => {
         alert('Something went wrong');

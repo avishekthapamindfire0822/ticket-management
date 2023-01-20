@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Card } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/AuthContextProvider';
 import {
   assignTicketToStaff,
@@ -12,6 +13,7 @@ import CommentBox from '../comment/CommentBox';
 import CommentList from '../comment/CommentList';
 import StaffDropdown from '../dropdown/StaffDropdown';
 import TicketStatusDropDown from '../dropdown/TicketStatusDropDown';
+
 const TicketListItem = ({
   _id,
   title,
@@ -35,12 +37,12 @@ const TicketListItem = ({
     deleteTicket(state.token, _id)
       .then((res) => {
         if (res.status === 204) {
-          alert('Ticket Deleted Successfully');
+          alert('Ticket deleted successfully.');
           deleteTicketCallback(_id);
         }
       })
       .catch((err) => {
-        console.log({ err });
+        toast.error('Unable to delete ticket. Please try after sometime!');
       });
   };
 
@@ -48,11 +50,12 @@ const TicketListItem = ({
     markTicketAsComplete(state.token, _id, ticketStatus)
       .then((res) => {
         if (res.status === 204) {
+          toast.success('Ticket status updated successfully.');
           ticketUpdateCallback(_id, ticketStatus);
         }
       })
       .catch((err) => {
-        console.log(err);
+        toast.error('Something went wrong!');
       });
   };
 
@@ -67,7 +70,9 @@ const TicketListItem = ({
         commentRef.current.value = '';
         postNewCommentCallback(_id, res.data.data);
       })
-      .catch(console.log);
+      .catch(() => {
+        toast.error('Unable to post comment.Try after some time!');
+      });
   };
 
   const assignTicket = (emailId) => {
@@ -81,9 +86,14 @@ const TicketListItem = ({
             _id,
             ticketId: _id,
           });
+          toast.success(
+            `Ticket successfully assigned to ${firstName} ${lastName}`
+          );
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        toast.error('Ticket Assignment failed.Please try after some time!');
+      });
   };
   return (
     <>

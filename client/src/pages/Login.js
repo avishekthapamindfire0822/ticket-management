@@ -11,6 +11,7 @@ import { loginUser } from '../service/auth.service';
 import { AuthContext } from '../context/AuthContextProvider';
 import { AUTH_REDUCER_ACTION } from '../reducer/auth-reducer';
 import NavMenu from '../component/nav/NavMenu';
+import { toast } from 'react-toastify';
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -22,12 +23,17 @@ const Login = () => {
     event.preventDefault();
     const emailId = emailRef.current.value;
     const password = passwordRef.current.value;
-    loginUser({ emailId, password }).then((res) => {
-      dispatch({
-        type: AUTH_REDUCER_ACTION.LOGIN,
-        payload: { ...res.data.data },
+    loginUser({ emailId, password })
+      .then((res) => {
+        dispatch({
+          type: AUTH_REDUCER_ACTION.LOGIN,
+          payload: { ...res.data.data },
+        });
+        toast.success('Login Successfully.');
+      })
+      .catch((err) => {
+        toast.error('Invalid Credentials');
       });
-    });
   };
   return (
     <>
