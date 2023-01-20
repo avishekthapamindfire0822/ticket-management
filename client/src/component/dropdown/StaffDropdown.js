@@ -13,14 +13,11 @@ const StaffDropdown = ({
   };
   return (
     <Form.Select className='w-auto' value={value} onChange={onChangeHandler}>
-      {!currentAssignedStaffEmailId ? (
-        <option value=''>Unassigned</option>
-      ) : null}
+      <option value=''>Unassigned</option>
       {staffMembers.map((staffMember) => (
-        <option
-          key={staffMember._id}
-          value={staffMember.emailId}
-        >{`${staffMember.firstName} ${staffMember.lastName}`}</option>
+        <option key={staffMember._id} value={staffMember.emailId}>
+          {`${staffMember.firstName} ${staffMember.lastName}`}
+        </option>
       ))}
     </Form.Select>
   );

@@ -30,8 +30,11 @@ const Home = () => {
     const lastName = lastNameRef.current.value;
     const emailId = emailRef.current.value;
     const ticketDescription = descriptionRef.current.value;
-    const aboutTicket = productRef.current.value;
+    const productType = productRef.current.value;
     const title = titleRef.current.value;
+    if (productType === '') {
+      return toast.warn('Please select product type for ticket.');
+    }
     setCreateTicketIsInProgress(true);
     createTicket({
       firstName,
@@ -39,7 +42,7 @@ const Home = () => {
       emailId,
       title,
       description: ticketDescription,
-      about: aboutTicket,
+      about: productType,
     })
       .then(() => {
         resetInputs();
@@ -135,7 +138,7 @@ const Home = () => {
                   ref={productRef}
                   disabled={createTicketIsInProgress}
                 >
-                  <option>Select</option>
+                  <option value=''>Select</option>
                   <option value='MOBILE_APP'>Mobile App</option>
                   <option value='WEBSITE'>Website</option>
                   <option value='GENERAL'>General</option>

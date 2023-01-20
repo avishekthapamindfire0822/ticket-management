@@ -68,6 +68,7 @@ const ManageTicket = () => {
   };
 
   const assignedTicketCallback = ({ ticketId, ...ticketAssignDetail }) => {
+    console.log({ ticketId });
     setTicketState((prevState) => ({
       ...prevState,
       data: prevState.data.map((ticket) =>

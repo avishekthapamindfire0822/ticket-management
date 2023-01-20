@@ -84,19 +84,25 @@ const TicketListItem = ({
     assignTicketToStaff(state.token, _id, emailId)
       .then((res) => {
         if (res.status === 201) {
-          const { firstName, lastName, _id } = res.data.data;
-          assignedTicketCallback({
-            firstName,
-            lastName,
-            _id,
-            ticketId: _id,
-          });
-          toast.success(
-            `Ticket successfully assigned to ${firstName} ${lastName}`
-          );
+          if (emailId === '') {
+            assignedTicketCallback({});
+            toast.success(`Ticket is successfully unassigned.`);
+          } else {
+            const { firstName, lastName, _id } = res.data.data;
+            assignedTicketCallback({
+              firstName,
+              lastName,
+              _id,
+              ticketId: _id,
+            });
+            toast.success(
+              `Ticket successfully assigned to ${firstName} ${lastName}`
+            );
+          }
         }
       })
       .catch((err) => {
+        console.log({ err });
         toast.error('Ticket Assignment failed.Please try after some time!');
       });
   };
@@ -104,7 +110,7 @@ const TicketListItem = ({
     <>
       <Col>
         <Card
-          className='mb-2'
+          className='mb-2 overflow-hidden'
           style={{
             height: '45rem',
           }}
@@ -149,17 +155,6 @@ const TicketListItem = ({
               submitHandler={submitHandler}
               postCommentIsInProgress={postCommentIsInProgress}
             />
-            {/* <p
-              className='text-decoration-underline'
-              onClick={() => {
-                setShowComments((prevState) => !prevState);
-              }}
-              style={{
-                cursor: 'pointer',
-              }}
-            >
-              {!showComment ? 'Show' : 'Hide'} comments
-            </p> */}
             {comments?.length > 0 ? <CommentList comments={comments} /> : null}
             {comments?.length === 0 ? <p>No Comments</p> : null}
           </Card.Body>

@@ -51,7 +51,6 @@ const postCommentOnTicket = async ({ userId, ticketId, comment }) => {
   ticket.comments.push(newComment);
   const updatedTicket = await ticket.save();
   const updatedComment = updatedTicket.comments.at(-1);
-  console.log({ res: JSON.stringify(updatedComment) });
   return updatedComment;
 };
 
@@ -61,15 +60,21 @@ const assignedTicket = async (ticketId, emailId) => {
   if (!ticket) {
     throw new NotFoundException();
   }
-  const user = await User.findOne({
-    emailId,
-  });
+  const user =
+    emailId === ''
+      ? null
+      : await User.findOne({
+          emailId,
+        });
   ticket.assignedTo = user;
   const updatedTicket = await ticket.save();
+  if (emailId === '') {
+    return null;
+  }
   return {
     _id: updatedTicket._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
+    firstName: user?.firstName,
+    lastName: user?.lastName,
     emailId: user.emailId,
   };
 };
