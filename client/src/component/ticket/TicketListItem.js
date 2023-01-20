@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { Button, Card, Stack } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContextProvider';
 import {
   assignTicketToStaff,
@@ -11,8 +11,7 @@ import formatDate from '../../util/util';
 import CommentBox from '../comment/CommentBox';
 import CommentList from '../comment/CommentList';
 import StaffDropdown from '../dropdown/StaffDropdown';
-import AssignTicketModal from '../ticket-modal/AssignTicketModal';
-import TicketStatus from './TicketStatus';
+import TicketStatusDropDown from '../dropdown/TicketStatusDropDown';
 const TicketListItem = ({
   _id,
   submittedBy,
@@ -49,12 +48,11 @@ const TicketListItem = ({
       });
   };
 
-  const onChangeHandler = (event) => {
-    markTicketAsComplete(state.token, _id)
+  const updateTicketStatus = (ticketStatus) => {
+    markTicketAsComplete(state.token, _id, ticketStatus)
       .then((res) => {
         if (res.status === 204) {
-          alert('Ticket updated successfully.');
-          ticketUpdateCallback(_id);
+          ticketUpdateCallback(_id, ticketStatus);
         }
       })
       .catch((err) => {
@@ -111,22 +109,25 @@ const TicketListItem = ({
           ) : null}
           <p className='mb-4'>{description}</p>
           <p>Submitted on : {formatDate(createdAt)}</p>
-          <p className='fw-bold'>
-            Status : {status.toUpperCase()}
-            <TicketStatus status={status} />
-          </p>
+          <div className='d-flex align-items-center gap-1 mb-2'>
+            <p className='m-0'>Status :</p>
+            <TicketStatusDropDown
+              ticketCurrentStatus={status}
+              updateTicketStatus={updateTicketStatus}
+            />
+          </div>
           {state.role === 'IT_STAFF' ? (
             <p>
               Submitted by :{' '}
               {`${submittedBy.firstName} ${submittedBy.lastName}`}
             </p>
           ) : null}
-          {state.role === 'IT_STAFF' && status !== 'FIXED' ? (
+          {/* {state.role === 'IT_STAFF' && status !== 'FIXED' ? (
             <div className='text-end'>
               <input type='checkbox' onChange={onChangeHandler} />
               <span className='mx-2'>Mark As Fixed</span>
             </div>
-          ) : null}
+          ) : null} */}
           <div className='d-flex align-items-center gap-2 mb-3'>
             <p className='m-0'>Assign To : </p>
             <StaffDropdown

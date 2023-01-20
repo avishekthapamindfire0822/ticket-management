@@ -9,7 +9,6 @@ const TicketList = ({
   assignedTicketCallback,
   staffMembers,
 }) => {
-  console.log({ staffMembers });
   return (
     <ul className={styles['ticket-list']}>
       {tickets.map((ticket) => (
