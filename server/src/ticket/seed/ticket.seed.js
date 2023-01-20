@@ -14,7 +14,7 @@ const userRoles = require('../../user/user.roles');
     const users = await User.find({});
     const tickets = users.map((user) => {
       const ticket = new Ticket({
-        submittedBy: user,
+        submittedBy: {},
         about: Object.values(ticketProductTypes)[Math.floor(Math.random() * 5)],
         description: 'Default Ticket Description',
       });
