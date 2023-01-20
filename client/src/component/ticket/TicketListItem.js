@@ -14,6 +14,7 @@ import StaffDropdown from '../dropdown/StaffDropdown';
 import TicketStatusDropDown from '../dropdown/TicketStatusDropDown';
 const TicketListItem = ({
   _id,
+  title,
   submittedBy,
   description,
   createdAt,
@@ -100,36 +101,31 @@ const TicketListItem = ({
               </span>
             </p>
           ) : null}
-          <p className='mb-4'>{description}</p>
+          <p className='fw-bold mb-4'>{title}</p>
+          <p className='mb-3'>{description}</p>
           <p>Submitted on : {formatDate(createdAt)}</p>
-          <div className='d-flex align-items-center gap-1 mb-2'>
-            <p className='m-0'>Status :</p>
-            <TicketStatusDropDown
-              ticketCurrentStatus={status}
-              updateTicketStatus={updateTicketStatus}
-            />
-          </div>
-          {state.role === 'IT_STAFF' ? (
-            <p>
-              Submitted by :{' '}
-              {`${submittedBy.firstName} ${submittedBy.lastName}`}
-            </p>
-          ) : null}
-          {/* {state.role === 'IT_STAFF' && status !== 'FIXED' ? (
-            <div className='text-end'>
-              <input type='checkbox' onChange={onChangeHandler} />
-              <span className='mx-2'>Mark As Fixed</span>
+          <p className='mb-4'>
+            Submitted by : {`${submittedBy.firstName} ${submittedBy.lastName}`}
+          </p>
+          <div className='d-flex justify-content-between'>
+            <div className='d-flex align-items-center gap-1 mb-2'>
+              <p className='m-0'>Status :</p>
+              <TicketStatusDropDown
+                ticketCurrentStatus={status}
+                updateTicketStatus={updateTicketStatus}
+              />
             </div>
-          ) : null} */}
-          <div className='d-flex align-items-center gap-2 mb-3'>
-            <p className='m-0'>Assign To : </p>
-            <StaffDropdown
-              staffMembers={staffMembers}
-              currentAssignedStaffEmailId={assignedTo?.emailId}
-              assignTicket={assignTicket}
-            />
+            <div className='d-flex align-items-center gap-2 mb-3'>
+              <p className='m-0'>Assign To : </p>
+              <StaffDropdown
+                staffMembers={staffMembers}
+                currentAssignedStaffEmailId={assignedTo?.emailId}
+                assignTicket={assignTicket}
+              />
+            </div>
           </div>
           <p
+            className='text-decoration-underline'
             onClick={() => {
               setShowComments((prevState) => !prevState);
             }}

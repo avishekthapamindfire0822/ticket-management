@@ -5,16 +5,17 @@ import { createTicket } from '../service/ticket.service';
 
 const Home = () => {
   const descriptionRef = useRef();
-  const aboutTicketRef = useRef();
+  const productRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
   const emailRef = useRef();
+  const titleRef = useRef();
   const resetInputs = () => {
     firstNameRef.current.value = '';
     lastNameRef.current.value = '';
     emailRef.current.value = '';
     descriptionRef.current.value = '';
-    aboutTicketRef.current.value = '';
+    productRef.current.value = '';
   };
   const submitHandler = (event) => {
     event.preventDefault();
@@ -22,12 +23,13 @@ const Home = () => {
     const lastName = lastNameRef.current.value;
     const emailId = emailRef.current.value;
     const ticketDescription = descriptionRef.current.value;
-    const aboutTicket = aboutTicketRef.current.value;
-
+    const aboutTicket = productRef.current.value;
+    const title = titleRef.current.value;
     createTicket({
       firstName,
       lastName,
       emailId,
+      title,
       description: ticketDescription,
       about: aboutTicket,
     })
@@ -48,61 +50,79 @@ const Home = () => {
         <Card
           style={{
             maxWidth: 'min(90%,30rem)',
-            margin: '1rem auto',
+            margin: '2rem auto',
           }}
         >
+          <Card.Header>
+            <Card.Title className='text-center'>Create Ticket</Card.Title>
+          </Card.Header>
           <Card.Body>
             <Form onSubmit={submitHandler}>
               <Form.Group className='mb-3'>
                 <Form.Label>Firstname</Form.Label>
+                <span className='text-danger fw-bold mx-1'>*</span>
                 <Form.Control
-                  placeholder='Enter Firstname'
+                  placeholder='Firstname'
                   ref={firstNameRef}
                   required
                 />
               </Form.Group>
               <Form.Group className='mb-3'>
                 <Form.Label>Lastname</Form.Label>
+                <span className='text-danger fw-bold mx-1'>*</span>
                 <Form.Control
                   type='text'
-                  placeholder='Enter lastName'
+                  placeholder='Lastname'
                   ref={lastNameRef}
                   required
                 />
               </Form.Group>
               <Form.Group className='mb-3'>
                 <Form.Label>Email</Form.Label>
+                <span className='text-danger fw-bold mx-1'>*</span>
                 <Form.Control
                   type='email'
-                  placeholder='Enter Email'
+                  placeholder='Email'
                   required
                   ref={emailRef}
                 />
               </Form.Group>
               <Form.Group className='mb-3'>
-                <Form.Label>Ticket Description</Form.Label>
+                <Form.Label>Title</Form.Label>
+                <span className='text-danger fw-bold mx-1'>*</span>
+                <Form.Control
+                  type='text'
+                  placeholder='Title'
+                  required
+                  ref={titleRef}
+                />
+              </Form.Group>
+              <Form.Group className='mb-3'>
+                <Form.Label>Description</Form.Label>
+                <span className='text-danger fw-bold mx-1'>*</span>
                 <Form.Control
                   as='textarea'
                   type='text'
-                  placeholder='Enter description'
+                  placeholder='Description'
                   style={{ height: '100px' }}
                   ref={descriptionRef}
                 />
               </Form.Group>
 
               <Form.Group className='mb-3'>
-                <Form.Label>About</Form.Label>
-                <Form.Select ref={aboutTicketRef}>
+                <Form.Label>Product</Form.Label>
+                <span className='text-danger fw-bold mx-1'>*</span>
+                <Form.Select ref={productRef}>
                   <option>Select</option>
                   <option value='MOBILE_APP'>Mobile App</option>
                   <option value='WEBSITE'>Website</option>
-                  <option value='GENERAL'>GENERAL</option>
+                  <option value='GENERAL'>General</option>
                   <option value='SUBSCRIPTIONS'>Subscriptions</option>
                   <option value='OTHER'>Other</option>
                 </Form.Select>
               </Form.Group>
               <div className='text-center'>
-                <Button variant='primary' type='submit'>
+                <Button variant='primary w-100' type='submit'>
                   Submit
                 </Button>
               </div>
