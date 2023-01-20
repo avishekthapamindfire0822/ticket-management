@@ -1,5 +1,5 @@
-import React, { useContext, useRef } from 'react';
-import { Button, Card, Form } from 'react-bootstrap';
+import React, { useContext, useRef, useState } from 'react';
+import { Button, Card, Form, Spinner } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavMenu from '../component/nav/NavMenu';
@@ -8,6 +8,8 @@ import { createTicket } from '../service/ticket.service';
 
 const Home = () => {
   const { state } = useContext(AuthContext);
+  const [createTicketIsInProgress, setCreateTicketIsInProgress] =
+    useState(false);
   const descriptionRef = useRef();
   const productRef = useRef();
   const firstNameRef = useRef();
@@ -20,6 +22,7 @@ const Home = () => {
     emailRef.current.value = '';
     descriptionRef.current.value = '';
     productRef.current.value = '';
+    titleRef.current.value = '';
   };
   const submitHandler = (event) => {
     event.preventDefault();
@@ -29,6 +32,7 @@ const Home = () => {
     const ticketDescription = descriptionRef.current.value;
     const aboutTicket = productRef.current.value;
     const title = titleRef.current.value;
+    setCreateTicketIsInProgress(true);
     createTicket({
       firstName,
       lastName,
@@ -43,6 +47,9 @@ const Home = () => {
       })
       .catch((err) => {
         alert('Something went wrong');
+      })
+      .finally(() => {
+        setCreateTicketIsInProgress(false);
       });
   };
   if (state.token) {
@@ -72,6 +79,7 @@ const Home = () => {
                   placeholder='Firstname'
                   ref={firstNameRef}
                   required
+                  disabled={createTicketIsInProgress}
                 />
               </Form.Group>
               <Form.Group className='mb-3'>
@@ -82,6 +90,7 @@ const Home = () => {
                   placeholder='Lastname'
                   ref={lastNameRef}
                   required
+                  disabled={createTicketIsInProgress}
                 />
               </Form.Group>
               <Form.Group className='mb-3'>
@@ -92,6 +101,7 @@ const Home = () => {
                   placeholder='Email'
                   required
                   ref={emailRef}
+                  disabled={createTicketIsInProgress}
                 />
               </Form.Group>
               <Form.Group className='mb-3'>
@@ -102,6 +112,7 @@ const Home = () => {
                   placeholder='Title'
                   required
                   ref={titleRef}
+                  disabled={createTicketIsInProgress}
                 />
               </Form.Group>
               <Form.Group className='mb-3'>
@@ -113,13 +124,17 @@ const Home = () => {
                   placeholder='Description'
                   style={{ height: '100px' }}
                   ref={descriptionRef}
+                  disabled={createTicketIsInProgress}
                 />
               </Form.Group>
 
               <Form.Group className='mb-3'>
                 <Form.Label>Product</Form.Label>
                 <span className='text-danger fw-bold mx-1'>*</span>
-                <Form.Select ref={productRef}>
+                <Form.Select
+                  ref={productRef}
+                  disabled={createTicketIsInProgress}
+                >
                   <option>Select</option>
                   <option value='MOBILE_APP'>Mobile App</option>
                   <option value='WEBSITE'>Website</option>
@@ -129,8 +144,12 @@ const Home = () => {
                 </Form.Select>
               </Form.Group>
               <div className='text-center'>
-                <Button variant='primary w-100' type='submit'>
-                  Submit
+                <Button
+                  variant='primary w-100'
+                  type='submit'
+                  disabled={createTicketIsInProgress}
+                >
+                  {createTicketIsInProgress ? <Spinner /> : 'Submit'}
                 </Button>
               </div>
             </Form>

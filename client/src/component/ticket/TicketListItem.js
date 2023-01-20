@@ -30,6 +30,7 @@ const TicketListItem = ({
   staffMembers,
 }) => {
   const { state } = useContext(AuthContext);
+  const [postCommentIsInProgress, setPostCommentIsInProgress] = useState(false);
   const commentRef = useRef();
   const deleteTicketHandler = (event) => {
     event.preventDefault();
@@ -64,6 +65,7 @@ const TicketListItem = ({
     if (!comment) {
       return;
     }
+    setPostCommentIsInProgress(true);
     postCommentOnTicket(state.token, _id, comment)
       .then((res) => {
         commentRef.current.value = '';
@@ -72,6 +74,9 @@ const TicketListItem = ({
       .catch((err) => {
         console.log({ err });
         toast.error('Unable to post comment.Try after some time!');
+      })
+      .finally(() => {
+        setPostCommentIsInProgress(false);
       });
   };
 
@@ -105,18 +110,16 @@ const TicketListItem = ({
           }}
         >
           <Card.Body>
-            {state.role === 'IT_STAFF' ? (
-              <p className='text-end' onClick={deleteTicketHandler}>
-                <span
-                  className='text-white bg-danger px-2 py-1 rounded-pill text-capitalize'
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                >
-                  delete
-                </span>
-              </p>
-            ) : null}
+            <p className='text-end' onClick={deleteTicketHandler}>
+              <span
+                className='text-white bg-danger px-2 py-1 rounded-pill text-capitalize'
+                style={{
+                  cursor: 'pointer',
+                }}
+              >
+                delete
+              </span>
+            </p>
             <p className={`${styles['trim-text']} fw-bold mb-4`}>{title}</p>
             <p className={`${styles['trim-text']} mb-3`}>{description}</p>
             <p>Submitted on : {formatDate(createdAt)}</p>
@@ -141,7 +144,11 @@ const TicketListItem = ({
                 />
               </div>
             </div>
-            <CommentBox ref={commentRef} submitHandler={submitHandler} />
+            <CommentBox
+              ref={commentRef}
+              submitHandler={submitHandler}
+              postCommentIsInProgress={postCommentIsInProgress}
+            />
             {/* <p
               className='text-decoration-underline'
               onClick={() => {
@@ -153,7 +160,6 @@ const TicketListItem = ({
             >
               {!showComment ? 'Show' : 'Hide'} comments
             </p> */}
-
             {comments?.length > 0 ? <CommentList comments={comments} /> : null}
             {comments?.length === 0 ? <p>No Comments</p> : null}
           </Card.Body>

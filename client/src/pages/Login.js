@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -12,10 +12,12 @@ import { AuthContext } from '../context/AuthContextProvider';
 import { AUTH_REDUCER_ACTION } from '../reducer/auth-reducer';
 import NavMenu from '../component/nav/NavMenu';
 import { toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const { state, dispatch } = useContext(AuthContext);
+  const [loginIsInProgress, setLoginIsInProgress] = useState(false);
   if (state.token) {
     return <Navigate to='/manage-ticket' replace />;
   }
@@ -23,6 +25,7 @@ const Login = () => {
     event.preventDefault();
     const emailId = emailRef.current.value;
     const password = passwordRef.current.value;
+    setLoginIsInProgress(true);
     loginUser({ emailId, password })
       .then((res) => {
         sessionStorage.setItem('token', res.data.data.token);
@@ -31,10 +34,14 @@ const Login = () => {
           type: AUTH_REDUCER_ACTION.LOGIN,
           payload: { ...res.data.data },
         });
+
         toast.success('Login Successfully.');
       })
       .catch((err) => {
         toast.error('Invalid Credentials');
+      })
+      .finally(() => {
+        setLoginIsInProgress(false);
       });
   };
   return (
@@ -62,6 +69,7 @@ const Login = () => {
                       ref={emailRef}
                       name='emailId'
                       required
+                      disabled={loginIsInProgress}
                     />
                   </Form.Group>
                   <Form.Group className='mb-3' controlId='formBasicPassword'>
@@ -73,11 +81,16 @@ const Login = () => {
                       ref={passwordRef}
                       required
                       name='password'
+                      disabled={loginIsInProgress}
                     />
                   </Form.Group>
                   <Stack>
-                    <Button variant='primary' type='submit'>
-                      Submit
+                    <Button
+                      variant='primary'
+                      type='submit'
+                      disabled={loginIsInProgress}
+                    >
+                      {loginIsInProgress ? <Spinner /> : 'Submit'}
                     </Button>
                   </Stack>
                 </Form>
