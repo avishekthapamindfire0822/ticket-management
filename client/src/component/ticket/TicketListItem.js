@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { Button, Card, Form } from 'react-bootstrap';
+import { Button, Card, Stack } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthContextProvider';
 import {
   assignTicketToStaff,
@@ -7,8 +7,10 @@ import {
   markTicketAsComplete,
   postCommentOnTicket,
 } from '../../service/ticket.service';
+import formatDate from '../../util/util';
 import CommentBox from '../comment/CommentBox';
 import CommentList from '../comment/CommentList';
+import StaffDropdown from '../dropdown/StaffDropdown';
 import AssignTicketModal from '../ticket-modal/AssignTicketModal';
 import TicketStatus from './TicketStatus';
 const TicketListItem = ({
@@ -23,6 +25,7 @@ const TicketListItem = ({
   postNewCommentCallback,
   assignedTicketCallback,
   comments,
+  staffMembers,
 }) => {
   const { state } = useContext(AuthContext);
   const [showComment, setShowComments] = useState(false);
@@ -68,12 +71,13 @@ const TicketListItem = ({
     postCommentOnTicket(state.token, _id, comment)
       .then((res) => {
         commentRef.current.value = '';
-        postNewCommentCallback(_id, res.data.data.comments);
+        console.log({ res });
+        postNewCommentCallback(_id, res.data.data);
       })
       .catch(console.log);
   };
 
-  const assignedTicket = (emailId) => {
+  const assignTicket = (emailId) => {
     assignTicketToStaff(state.token, _id, emailId)
       .then((res) => {
         if (res.status === 201) {
@@ -89,7 +93,6 @@ const TicketListItem = ({
       })
       .catch((err) => {});
   };
-
   return (
     <>
       <Card className='mb-2'>
@@ -107,7 +110,7 @@ const TicketListItem = ({
             </p>
           ) : null}
           <p className='mb-4'>{description}</p>
-          <p>Submitted on : {new Date(createdAt).toDateString()}</p>
+          <p>Submitted on : {formatDate(createdAt)}</p>
           <p className='fw-bold'>
             Status : {status.toUpperCase()}
             <TicketStatus status={status} />
@@ -124,21 +127,14 @@ const TicketListItem = ({
               <span className='mx-2'>Mark As Fixed</span>
             </div>
           ) : null}
-          {assignedTo ? (
-            <p>
-              Assigned To : {assignedTo.firstName} {assignedTo.lastName}
-            </p>
-          ) : null}
-
-          {state.role === 'IT_STAFF' && !assignedTo ? (
-            <Button
-              className='bg-primary text-capitalize mb-1'
-              onClick={ticketAssignModalVisibilityHandler}
-            >
-              assign to
-            </Button>
-          ) : null}
-
+          <div className='d-flex align-items-center gap-2 mb-3'>
+            <p className='m-0'>Assign To : </p>
+            <StaffDropdown
+              staffMembers={staffMembers}
+              currentAssignedStaffEmailId={assignedTo?.emailId}
+              assignTicket={assignTicket}
+            />
+          </div>
           <p
             onClick={() => {
               setShowComments((prevState) => !prevState);
@@ -147,24 +143,17 @@ const TicketListItem = ({
               cursor: 'pointer',
             }}
           >
-            Show comments
+            {!showComment ? 'Show' : 'Hide'} comments
           </p>
+          {showComment && state.role === 'IT_STAFF' ? (
+            <CommentBox ref={commentRef} submitHandler={submitHandler} />
+          ) : null}
           {showComment && comments?.length > 0 ? (
-            <>
-              {state.role === 'IT_STAFF' ? (
-                <CommentBox ref={commentRef} submitHandler={submitHandler} />
-              ) : null}
-              <CommentList comments={comments} />
-            </>
+            <CommentList comments={comments} />
           ) : null}
           {showComment && comments?.length === 0 ? <p>No Comments</p> : null}
         </Card.Body>
       </Card>
-      <AssignTicketModal
-        show={showTickedAssignModal}
-        handleClose={ticketAssignModalVisibilityHandler}
-        assignedTicket={assignedTicket}
-      />
     </>
   );
 };

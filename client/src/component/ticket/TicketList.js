@@ -7,12 +7,15 @@ const TicketList = ({
   ticketUpdateCallback,
   postNewCommentCallback,
   assignedTicketCallback,
+  staffMembers,
 }) => {
+  console.log({ staffMembers });
   return (
     <ul className={styles['ticket-list']}>
       {tickets.map((ticket) => (
         <TicketListItem
           key={ticket._id}
+          staffMembers={staffMembers}
           {...ticket}
           deleteTicketCallback={deleteTicketCallback}
           ticketUpdateCallback={ticketUpdateCallback}
