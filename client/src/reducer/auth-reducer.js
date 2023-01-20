@@ -1,5 +1,6 @@
 const AUTH_REDUCER_ACTION = {
   LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
 };
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -8,6 +9,9 @@ const authReducer = (state, action) => {
         ...state,
         ...action.payload,
       };
+    }
+    case AUTH_REDUCER_ACTION.LOGOUT: {
+      return {};
     }
     default:
       return state;

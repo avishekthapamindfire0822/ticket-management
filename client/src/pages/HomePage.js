@@ -1,10 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
+import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import NavMenu from '../component/nav/NavMenu';
+import { AuthContext } from '../context/AuthContextProvider';
 import { createTicket } from '../service/ticket.service';
 
 const Home = () => {
+  const { state } = useContext(AuthContext);
   const descriptionRef = useRef();
   const productRef = useRef();
   const firstNameRef = useRef();
@@ -42,6 +45,9 @@ const Home = () => {
         alert('Something went wrong');
       });
   };
+  if (state.token) {
+    return <Navigate to='/manage-ticket' replace />;
+  }
   return (
     <>
       <header>

@@ -25,6 +25,8 @@ const Login = () => {
     const password = passwordRef.current.value;
     loginUser({ emailId, password })
       .then((res) => {
+        sessionStorage.setItem('token', res.data.data.token);
+        sessionStorage.setItem('fullName', res.data.data.fullName);
         dispatch({
           type: AUTH_REDUCER_ACTION.LOGIN,
           payload: { ...res.data.data },
