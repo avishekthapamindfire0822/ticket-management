@@ -51,6 +51,7 @@ const postCommentOnTicket = async ({ userId, ticketId, comment }) => {
   ticket.comments.push(newComment);
   const updatedTicket = await ticket.save();
   const updatedComment = updatedTicket.comments.at(-1);
+  console.log({ res: JSON.stringify(updatedComment) });
   return updatedComment;
 };
 
