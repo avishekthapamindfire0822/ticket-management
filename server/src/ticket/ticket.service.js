@@ -75,6 +75,7 @@ const assignedTicket = async (ticketId, emailId) => {
 
 const getTickets = async (req, res) => {
   const tickets = await Ticket.find({})
+    .sort({ createdAt: -1 })
     .populate('submittedBy', '_id firstName lastName emailId')
     .populate({
       path: 'comments',
