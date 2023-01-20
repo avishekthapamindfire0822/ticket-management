@@ -18,8 +18,8 @@ const getUserTickets = async (userId, role) => {
           select: '_id firstName lastName emailId',
         },
       })
-      .populate('assignedTo', 'firstName lastName');
-    return { tickets };
+      .populate('assignedTo', 'firstName lastName emailId');
+    return tickets;
   }
   const tickets = await Ticket.find({
     submittedBy: userId,
