@@ -1,7 +1,7 @@
 .comments {
   max-height: 18rem;
   overflow: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-top: 1rem;
 }
 
@@ -18,4 +18,8 @@
 
 .comment-description {
   margin-left: 2.5rem;
+}
+
+.comment-date {
+  font-size: 0.8rem;
 }

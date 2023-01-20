@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-const CommentBox = React.forwardRef((commentRef, { submitHandler }) => {
+const CommentBox = React.forwardRef(({ submitHandler }, commentRef) => {
   return (
-    <Form onSubmit={submitHandler} className='mt-2'>
-      <Form.Group className='mb-3'>
+    <Form onSubmit={submitHandler} className='mt-2 d-flex gap-2'>
+      <Form.Group className='mb-3 flex-grow-1'>
         <Form.Control
           type='text'
           placeholder='Enter comment'
