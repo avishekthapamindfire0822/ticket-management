@@ -90,6 +90,19 @@ const getTickets = async (req, res) => {
   return tickets;
 };
 
+const getTicketAggregates = async () => {
+  const noOfTicketBasedOnStatus = await Ticket.aggregate().group({
+    _id: '$status',
+    count: { $sum: 1 },
+  });
+  const result = noOfTicketBasedOnStatus.reduce((cumm, curr) => {
+    cumm[curr._id] = curr.count;
+    return cumm;
+  }, {});
+  return {
+    ...result,
+  };
+};
 module.exports = {
   createTicket,
   updateTicket,
@@ -97,4 +110,5 @@ module.exports = {
   postCommentOnTicket,
   assignedTicket,
   getTickets,
+  getTicketAggregates,
 };

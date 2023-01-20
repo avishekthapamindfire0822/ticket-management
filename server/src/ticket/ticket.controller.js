@@ -61,6 +61,13 @@ const getTickets = asyncHandler(async (req, res) => {
   });
 });
 
+const getTicketAggregates = asyncHandler(async (req, res) => {
+  const ticketAggregates = await ticketService.getTicketAggregates();
+  res.status(200).json({
+    data: ticketAggregates,
+  });
+});
+
 module.exports = {
   createTicket,
   updateTicket,
@@ -68,4 +75,5 @@ module.exports = {
   postCommentOnTicket,
   assignedTicket,
   getTickets,
+  getTicketAggregates,
 };

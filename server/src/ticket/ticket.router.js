@@ -26,5 +26,10 @@ ticketRouter.post(
   roleValidationMiddleware(userRoles.IT_STAFF),
   ticketController.postCommentOnTicket
 );
-
+ticketRouter
+  .route('/ticket-aggregates')
+  .get(
+    roleValidationMiddleware(userRoles.IT_STAFF),
+    ticketController.getTicketAggregates
+  );
 module.exports = ticketRouter;
