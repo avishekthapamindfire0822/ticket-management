@@ -24,22 +24,6 @@ Run
 npm install
 ```
 
-**Note:Add .env file under server directory to store environment variables**
-
-## Seed Data into database
-
-Create users.txt and ticket.txt
-
-Run
-
-```
-npm run seed:user
-```
-
-```
-npm run seed:ticket
-```
-
 # Please create a .env file with below property
 
 ```
@@ -69,7 +53,7 @@ Password : YVmhktgYVS
 # REMOTE URL
 
 ```
-https://ticket-management-mryh.onrender.com
+API : https://ticket-management-mryh.onrender.com
 ```
 
 # API DOCUMENTATION
