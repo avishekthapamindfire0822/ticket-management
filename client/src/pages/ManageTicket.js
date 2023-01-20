@@ -2,28 +2,29 @@ import React, { useContext, useEffect, useState } from 'react';
 import NavMenu from '../component/nav/NavMenu';
 import TicketList from '../component/ticket/TicketList';
 import { AuthContext } from '../context/AuthContextProvider';
-import { getTickets } from '../service/ticket.service';
+import { getITStaff, getTickets } from '../service/ticket.service';
 
 const ManageTicket = () => {
   const { state } = useContext(AuthContext);
   const [ticketState, setTicketState] = useState({
     loading: false,
     error: null,
+    data: null,
+    staffMembers: null,
   });
+  console.log({ ticketState });
   useEffect(() => {
-    getTickets(state.token)
-      .then((res) => {
+    Promise.allSettled([getTickets(state.token), getITStaff(state.token)])
+      .then((result) => {
+        const [ticketResult, stattMemberResult] = result;
+        console.log({ ticketResult, stattMemberResult });
         setTicketState((prevState) => ({
           ...prevState,
-          data: res.data.data.tickets,
+          data: ticketResult.value.data.data,
+          staffMembers: stattMemberResult.value.data.data,
         }));
       })
-      .catch((err) => {
-        setTicketState((prevState) => ({
-          ...prevState,
-          error: err,
-        }));
-      });
+      .catch((err) => {});
   }, [state.token]);
   const newTicketAddedCallback = (newTicket) => {
     setTicketState((prevState) => ({
@@ -38,11 +39,13 @@ const ManageTicket = () => {
     }));
   };
 
-  const postNewCommentCallback = (ticketId, newComments) => {
+  const postNewCommentCallback = (ticketId, newComment) => {
     setTicketState((prevState) => ({
       ...prevState,
       data: prevState.data.map((ticket) =>
-        ticket._id === ticketId ? { ...ticket, comments: newComments } : ticket
+        ticket._id === ticketId
+          ? { ...ticket, comments: [...ticket.comments, newComment] }
+          : ticket
       ),
     }));
   };
@@ -62,7 +65,6 @@ const ManageTicket = () => {
   };
 
   const assignedTicketCallback = ({ ticketId, ...ticketAssignDetail }) => {
-    console.log({ ticketId, ticketAssignDetail });
     setTicketState((prevState) => ({
       ...prevState,
       data: prevState.data.map((ticket) =>
@@ -77,15 +79,19 @@ const ManageTicket = () => {
       <NavMenu newTicketAddedCallback={newTicketAddedCallback} />
       {!ticketState.loading &&
       Array.isArray(ticketState.data) &&
-      ticketState.data.length > 0 ? (
+      Array.isArray(ticketState.staffMembers) &&
+      ticketState.data.length > 0 &&
+      ticketState.staffMembers.length > 0 ? (
         <TicketList
           tickets={ticketState.data}
+          staffMembers={ticketState.staffMembers}
           deleteTicketCallback={deleteTicketCallback}
           ticketUpdateCallback={ticketUpdateCallback}
           postNewCommentCallback={postNewCommentCallback}
           assignedTicketCallback={assignedTicketCallback}
         />
       ) : null}
+      {ticketState.error && <p></p>}
     </header>
   );
 };
