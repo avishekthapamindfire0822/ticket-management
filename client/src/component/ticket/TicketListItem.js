@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Col } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/AuthContextProvider';
 import {
@@ -13,7 +13,7 @@ import CommentBox from '../comment/CommentBox';
 import CommentList from '../comment/CommentList';
 import StaffDropdown from '../dropdown/StaffDropdown';
 import TicketStatusDropDown from '../dropdown/TicketStatusDropDown';
-
+import styles from './Ticket.module.css';
 const TicketListItem = ({
   _id,
   title,
@@ -37,8 +37,8 @@ const TicketListItem = ({
     deleteTicket(state.token, _id)
       .then((res) => {
         if (res.status === 204) {
-          alert('Ticket deleted successfully.');
           deleteTicketCallback(_id);
+          toast.success('Ticket deleted successfully.');
         }
       })
       .catch((err) => {
@@ -97,63 +97,68 @@ const TicketListItem = ({
   };
   return (
     <>
-      <Card className='mb-2'>
-        <Card.Body>
-          {state.role === 'IT_STAFF' ? (
-            <p className='text-end' onClick={deleteTicketHandler}>
-              <span
-                className='text-white bg-danger px-2 py-1 rounded-pill text-capitalize'
-                style={{
-                  cursor: 'pointer',
-                }}
-              >
-                delete
-              </span>
+      <Col>
+        <Card
+          className='mb-2'
+          style={{
+            height: '45rem',
+          }}
+        >
+          <Card.Body>
+            {state.role === 'IT_STAFF' ? (
+              <p className='text-end' onClick={deleteTicketHandler}>
+                <span
+                  className='text-white bg-danger px-2 py-1 rounded-pill text-capitalize'
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  delete
+                </span>
+              </p>
+            ) : null}
+            <p className={`${styles['trim-text']} fw-bold mb-4`}>{title}</p>
+            <p className={`${styles['trim-text']} mb-3`}>{description}</p>
+            <p>Submitted on : {formatDate(createdAt)}</p>
+            <p className='mb-4'>
+              Submitted by :{' '}
+              {`${submittedBy.firstName} ${submittedBy.lastName}`}
             </p>
-          ) : null}
-          <p className='fw-bold mb-4'>{title}</p>
-          <p className='mb-3'>{description}</p>
-          <p>Submitted on : {formatDate(createdAt)}</p>
-          <p className='mb-4'>
-            Submitted by : {`${submittedBy.firstName} ${submittedBy.lastName}`}
-          </p>
-          <div className='d-flex justify-content-between'>
-            <div className='d-flex align-items-center gap-1 mb-2'>
-              <p className='m-0'>Status :</p>
-              <TicketStatusDropDown
-                ticketCurrentStatus={status}
-                updateTicketStatus={updateTicketStatus}
-              />
+            <div className='d-flex justify-content-between align-items-center gap-2'>
+              <div className='d-flex align-items-center gap-1 mb-2'>
+                <p className='m-0'>Status :</p>
+                <TicketStatusDropDown
+                  ticketCurrentStatus={status}
+                  updateTicketStatus={updateTicketStatus}
+                />
+              </div>
+              <div className='d-flex align-items-center gap-2 mb-2'>
+                <p className='m-0'>Assign To : </p>
+                <StaffDropdown
+                  staffMembers={staffMembers}
+                  currentAssignedStaffEmailId={assignedTo?.emailId}
+                  assignTicket={assignTicket}
+                />
+              </div>
             </div>
-            <div className='d-flex align-items-center gap-2 mb-3'>
-              <p className='m-0'>Assign To : </p>
-              <StaffDropdown
-                staffMembers={staffMembers}
-                currentAssignedStaffEmailId={assignedTo?.emailId}
-                assignTicket={assignTicket}
-              />
-            </div>
-          </div>
-          <p
-            className='text-decoration-underline'
-            onClick={() => {
-              setShowComments((prevState) => !prevState);
-            }}
-            style={{
-              cursor: 'pointer',
-            }}
-          >
-            {!showComment ? 'Show' : 'Hide'} comments
-          </p>
-          {showComment && state.role === 'IT_STAFF' ? (
             <CommentBox ref={commentRef} submitHandler={submitHandler} />
-          ) : null}
-          {showComment && comments?.length > 0 ? (
-            <CommentList comments={comments} />
-          ) : null}
-          {showComment && comments?.length === 0 ? <p>No Comments</p> : null}
-        </Card.Body>
-      </Card>
+            {/* <p
+              className='text-decoration-underline'
+              onClick={() => {
+                setShowComments((prevState) => !prevState);
+              }}
+              style={{
+                cursor: 'pointer',
+              }}
+            >
+              {!showComment ? 'Show' : 'Hide'} comments
+            </p> */}
+
+            {comments?.length > 0 ? <CommentList comments={comments} /> : null}
+            {comments?.length === 0 ? <p>No Comments</p> : null}
+          </Card.Body>
+        </Card>
+      </Col>
     </>
   );
 };

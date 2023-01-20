@@ -39,7 +39,7 @@ const Login = () => {
   };
   return (
     <>
-      <NavMenu hideManageTicketMenu={true} />
+      <NavMenu hideManageTicketMenu={true} showCreateTicketLink={true} />
       <Container
         style={{
           marginTop: '6rem',

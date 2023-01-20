@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContextProvider';
 import { AUTH_REDUCER_ACTION } from '../../reducer/auth-reducer';
 import styles from './NavMenu.module.css';
-const NavMenu = ({ hideManageTicketMenu }) => {
+const NavMenu = ({ hideManageTicketMenu, showCreateTicketLink }) => {
   const { state, dispatch } = useContext(AuthContext);
   const logoutHandler = (event) => {
     sessionStorage.clear('token');
@@ -26,6 +26,13 @@ const NavMenu = ({ hideManageTicketMenu }) => {
             </Link>
           </Nav.Item>
         ) : null}
+        {/* {!showCreateTicketLink && !state.token ? (
+          <Nav.Item className={`mx-2 ${styles['menu-item']}`}>
+            <Link className='text-white text-decoration-none' to='/'>
+              Create Ticket
+            </Link>
+          </Nav.Item>
+        ) : null} */}
         {state.token ? (
           <Nav.Item
             className={`mx-2 ${styles['menu-item']}`}

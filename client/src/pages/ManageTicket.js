@@ -83,6 +83,7 @@ const ManageTicket = () => {
   return (
     <header>
       <NavMenu newTicketAddedCallback={newTicketAddedCallback} />
+      <h2 className='mx-4 mt-4'>Welcome {state.fullName}</h2>
       {!ticketState.loading &&
       Array.isArray(ticketState.data) &&
       Array.isArray(ticketState.staffMembers) &&
