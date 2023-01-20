@@ -5,6 +5,25 @@ const ticketStatus = require('./ticket.status');
 const { commentSchema } = require('./comment.model');
 const ticketSchema = new Schema(
   {
+    about: {
+      type: String,
+      required: [true, CONSTANTS.TICKET_RELATED_PRODUCT_REQUIRED],
+      enum: [...Object.values(ticketProductTypes)],
+    },
+    status: {
+      type: String,
+      enum: [...Object.values(ticketStatus)],
+      default: ticketStatus.UNDER_REVIEW,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    comments: [commentSchema],
     submittedBy: {
       firstName: {
         type: String,
@@ -19,19 +38,7 @@ const ticketSchema = new Schema(
         required: true,
       },
     },
-    about: {
-      type: String,
-      required: [true, CONSTANTS.TICKET_RELATED_PRODUCT_REQUIRED],
-      enum: [...Object.values(ticketProductTypes)],
-    },
-    status: {
-      type: String,
-      enum: [...Object.values(ticketStatus)],
-      default: ticketStatus.UNDER_REVIEW,
-    },
-    description: String,
     assignedTo: { type: Schema.Types.ObjectId, ref: 'User' },
-    comments: [commentSchema],
   },
   { timestamps: true }
 );

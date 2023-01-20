@@ -1,13 +1,14 @@
 const asyncHandler = require('express-async-handler');
 const ticketService = require('./ticket.service');
 const createTicket = asyncHandler(async (req, res) => {
-  const { description, about, firstName, lastName, emailId } = req.body;
+  const { description, about, firstName, lastName, emailId, title } = req.body;
   const ticket = await ticketService.createTicket({
     firstName,
     lastName,
     emailId,
     description,
     about,
+    title,
   });
   res.status(201).json({
     data: ticket,
