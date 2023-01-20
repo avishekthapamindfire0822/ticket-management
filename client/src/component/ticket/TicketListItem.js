@@ -30,7 +30,6 @@ const TicketListItem = ({
   staffMembers,
 }) => {
   const { state } = useContext(AuthContext);
-  const [showComment, setShowComments] = useState(false);
   const commentRef = useRef();
   const deleteTicketHandler = (event) => {
     event.preventDefault();
@@ -70,7 +69,8 @@ const TicketListItem = ({
         commentRef.current.value = '';
         postNewCommentCallback(_id, res.data.data);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log({ err });
         toast.error('Unable to post comment.Try after some time!');
       });
   };
