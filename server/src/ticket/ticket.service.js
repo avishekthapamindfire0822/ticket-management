@@ -17,18 +17,13 @@ const createTicket = async (ticketDto, submittedBy) => {
   );
 };
 
-const updateTicket = async (ticketId) => {
+const updateTicket = async (ticketId, ticketStatus) => {
   const _id = mongoose.Types.ObjectId(ticketId);
   const ticket = await Ticket.findById(_id);
   if (!ticket) {
     throw new NotFoundException(`Ticket with id ${ticketId} not available`);
   }
-  if (ticket.status === ticketStatus.FIXED) {
-    return {
-      message: 'Ticket is already resolved',
-    };
-  }
-  ticket.status = ticketStatus.FIXED;
+  ticket.status = ticketStatus;
   return ticket.save();
 };
 

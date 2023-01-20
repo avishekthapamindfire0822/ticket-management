@@ -31,12 +31,18 @@ const deleteTicket = async (token, ticketId) => {
   });
 };
 
-const markTicketAsComplete = async (token, ticketId) => {
-  return axiosInstance.put(`${API_URL_CONSTANTS.TICKET}/${ticketId}`, null, {
-    headers: {
-      Authorization: `Bearer ${token}`,
+const markTicketAsComplete = async (token, ticketId, ticketStatus) => {
+  return axiosInstance.put(
+    `${API_URL_CONSTANTS.TICKET}/${ticketId}`,
+    {
+      status: ticketStatus,
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
 };
 
 const postCommentOnTicket = async (token, ticketId, comment) => {

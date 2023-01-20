@@ -12,12 +12,10 @@ const ManageTicket = () => {
     data: null,
     staffMembers: null,
   });
-  console.log({ ticketState });
   useEffect(() => {
     Promise.allSettled([getTickets(state.token), getITStaff(state.token)])
       .then((result) => {
         const [ticketResult, stattMemberResult] = result;
-        console.log({ ticketResult, stattMemberResult });
         setTicketState((prevState) => ({
           ...prevState,
           data: ticketResult.value.data.data,
@@ -50,14 +48,14 @@ const ManageTicket = () => {
     }));
   };
 
-  const ticketUpdateCallback = (ticketId) => {
+  const ticketUpdateCallback = (ticketId, newTickStatus) => {
     setTicketState((prevState) => ({
       ...prevState,
       data: prevState.data.map((ticket) =>
         ticket._id === ticketId
           ? {
               ...ticket,
-              status: 'FIXED',
+              status: newTickStatus,
             }
           : ticket
       ),

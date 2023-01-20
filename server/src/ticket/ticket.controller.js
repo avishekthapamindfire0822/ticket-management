@@ -13,7 +13,8 @@ const createTicket = asyncHandler(async (req, res) => {
 
 const updateTicket = asyncHandler(async (req, res) => {
   const { ticketId } = req.params;
-  const updatedTicket = await ticketService.updateTicket(ticketId);
+  const { status } = req.body;
+  await ticketService.updateTicket(ticketId, status);
   res.status(204).json({
     data: {
       message: 'Ticket updated successfully',
