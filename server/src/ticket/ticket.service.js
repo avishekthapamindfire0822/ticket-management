@@ -73,6 +73,7 @@ const assignedTicket = async (ticketId, emailId) => {
     _id: updatedTicket._id,
     firstName: user.firstName,
     lastName: user.lastName,
+    emailId: user.emailId,
   };
 };
 
